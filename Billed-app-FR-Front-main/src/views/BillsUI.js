@@ -21,6 +21,7 @@ const row = (bill) => {
 
 const rows = (data) => {
   return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+  // trier les dates ici et peut-être condition regarder dans le test
 }
 
 export default ({ data: bills, loading, error }) => {
