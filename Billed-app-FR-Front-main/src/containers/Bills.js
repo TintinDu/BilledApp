@@ -38,6 +38,7 @@ export default class {
             try {
               return {
                 ...doc,
+                // formater date uniquement en prod soit ici soit dans BillsUI
                 date: formatDate(doc.date),
                 status: formatStatus(doc.status)
               }
