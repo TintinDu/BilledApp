@@ -17,7 +17,8 @@ export default class NewBill {
   }
   handleChangeFile = e => {
     e.preventDefault()
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    const inputFile = this.document.querySelector(`input[data-testid="file"]`)
+    const file = inputFile.files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
@@ -25,6 +26,26 @@ export default class NewBill {
     formData.append('file', file)
     formData.append('email', email)
 
+    let fileExtension = filePath[filePath.length-1].split(".")
+    fileExtension = fileExtension[fileExtension.length-1]
+
+    let errorMessage
+    // On vérifie que le fichier correspond au format attendu
+    if(!["jpeg", "jpg", "png"].includes(fileExtension) ) {
+      inputFile.value = null
+      // On vérifie que le message d'erreur n'est pas déjà présent
+      if (!this.document.querySelector(".errorMessage")) {
+        errorMessage = this.document.createElement("p")
+        errorMessage.innerText = "Seulement les fichiers de type jpeg, jpg ou png sont acceptés"
+        errorMessage.className = "errorMessage"
+        errorMessage.setAttribute("data-testid", "errorMessage")
+        inputFile.closest("div").appendChild(errorMessage)
+      }
+      // On cache le message d'erreur si le format du fichier est le bon et qu'un message d'erreur existait auparavant
+    } else if(this.document.querySelector(".errorMessage")) {
+      this.document.querySelector(".errorMessage").className = "errorMessage hidden"
+    }
+    // vérifier le texte de l'erreur dans le test, faire le plus simple possible, utiliser data-testid
     this.store
       .bills()
       .create({
@@ -34,7 +55,6 @@ export default class NewBill {
         }
       })
       .then(({fileUrl, key}) => {
-        console.log(fileUrl)
         this.billId = key
         this.fileUrl = fileUrl
         this.fileName = fileName
@@ -42,7 +62,6 @@ export default class NewBill {
   }
   handleSubmit = e => {
     e.preventDefault()
-    console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
       email,

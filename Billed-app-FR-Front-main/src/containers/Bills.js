@@ -44,8 +44,12 @@ export default class {
           const bills = snapshot.map((doc) => {
             try {
               return {
+                
                 date:
-                  typeof jest === "undefined" ? formatDate(doc.date) : doc.date,
+                  // in jest environment
+                  typeof jest === "undefined" ? formatDate(doc.date)
+                  // in prod environment
+                   : doc.date,
                 status: formatStatus(doc.status),
                 ...doc,
                 // formater date uniquement en prod soit ici soit dans BillsUI

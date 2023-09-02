@@ -2,7 +2,7 @@ const { Bill } = require('../models');
 
 const getFileURL = (filePath) => `http://localhost:5678/${filePath}`;
 
-const isPicture = (mimeType) => ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'].includes(mimeType);
+const isPicture = (mimeType) => ['image/jpeg', 'image/jpg', 'image/png'].includes(mimeType);
 
 const create = async (req, res) => {
   const { user } = req;
@@ -21,6 +21,7 @@ const create = async (req, res) => {
       amount,
     } = req.body;
     const { file } = req;
+
     const bill = await Bill.create({
       name,
       type,
