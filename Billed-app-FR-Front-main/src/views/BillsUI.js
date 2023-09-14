@@ -1,11 +1,10 @@
-import VerticalLayout from "./VerticalLayout.js";
-import ErrorPage from "./ErrorPage.js";
-import LoadingPage from "./LoadingPage.js";
+import VerticalLayout from './VerticalLayout.js';
+import ErrorPage from './ErrorPage.js';
+import LoadingPage from './LoadingPage.js';
 
-import Actions from "./Actions.js";
+import Actions from './Actions.js';
 
-const row = (bill) => {
-  return `
+const row = (bill) => `
     <tr>
       <td>${bill.type}</td>
       <td>${bill.name}</td>
@@ -13,17 +12,16 @@ const row = (bill) => {
       <td>${bill.amount} €</td>
       <td>${bill.status}</td>
       <td>
-        ${Actions(bill.fileUrl)}
+        ${!bill.fileUrl.endsWith('null') ? Actions(bill.fileUrl) : 'Format non supporté'}
       </td>
     </tr>
     `;
-};
 
 const rows = (data) => {
   const sortedData = data?.sort((a, b) => new Date(b.date) - new Date(a.date));
   return sortedData && sortedData.length
-    ? sortedData.map((bill) => row(bill)).join("")
-    : "";
+    ? sortedData.map((bill) => row(bill)).join('')
+    : '';
 };
 
 export default ({ data: bills, loading, error }) => {
@@ -46,7 +44,7 @@ export default ({ data: bills, loading, error }) => {
 
   if (loading) {
     return LoadingPage();
-  } else if (error) {
+  } if (error) {
     return ErrorPage(error);
   }
 

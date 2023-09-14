@@ -1,8 +1,8 @@
-import calendarIcon from '../assets/svg/calendar.js'
-import euroIcon from '../assets/svg/euro.js'
-import pctIcon from '../assets/svg/pct.js'
-import eyeWhite from '../assets/svg/eye_white.js'
-import { formatDate } from '../app/format.js'
+import calendarIcon from '../assets/svg/calendar.js';
+import euroIcon from '../assets/svg/euro.js';
+import pctIcon from '../assets/svg/pct.js';
+import eyeWhite from '../assets/svg/eye_white.js';
+import { formatDate } from '../app/format.js';
 
 export const modal = () => (`
   <div class="modal fade" id="modaleFileAdmin1" data-testid="modaleFileAdmin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -18,11 +18,11 @@ export const modal = () => (`
         </div>
       </div>
     </div>
-  </div>
-  `)
+  </div> 
+  `);
 
 export default (bill) => {
-  console.log(bill.fileName)
+  console.log(bill.fileName);
 
   return (`
     <div class="container dashboard-form" data-testid="dashboard-form">
@@ -69,9 +69,9 @@ export default (bill) => {
         <div class="col-sm">
           <label for="file" class="bold-label">Justificatif</label>
             <div class='input-field input-flex file-flex'>
-            <span id="file-name-admin">${bill.fileName !== null ? bill.fileName : "Type de fichier non supporté"}</span>
+            <span id="file-name-admin">${bill.fileName !== 'null' ? bill.fileName : 'Type de fichier non supporté'}</span>
             <div class='icons-container'>
-              <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${bill.fileUrl}">${bill.fileName !== null ? eyeWhite : ""} </span>
+              <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${bill.fileUrl}">${bill.fileName !== 'null' ? eyeWhite : ''} </span>
             </div>
           </div>
         </div>
@@ -99,5 +99,5 @@ export default (bill) => {
     </div>
     ${modal()}
     </div>
-  `)
-}
+  `);
+};
