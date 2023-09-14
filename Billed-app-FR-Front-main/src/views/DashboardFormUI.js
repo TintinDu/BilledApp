@@ -21,10 +21,7 @@ export const modal = () => (`
   </div> 
   `);
 
-export default (bill) => {
-  console.log(bill.fileName);
-
-  return (`
+export default (bill) => (`
     <div class="container dashboard-form" data-testid="dashboard-form">
       <div class="row">
         <div class="col-sm" id="dashboard-form-col1">
@@ -100,4 +97,3 @@ export default (bill) => {
     ${modal()}
     </div>
   `);
-};

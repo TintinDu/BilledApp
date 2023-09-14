@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { formatDate } from '../app/format.js';
 import DashboardFormUI from '../views/DashboardFormUI.js';
 import BigBilledIcon from '../assets/svg/big_billed.js';
@@ -59,6 +60,8 @@ export const getStatus = (index) => {
       return 'accepted';
     case 3:
       return 'refused';
+    default:
+      return '';
   }
 };
 
@@ -144,6 +147,8 @@ export default class {
 
     bills.forEach((bill) => {
       $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills));
+      // remove any existing click event handlers ensures one click event handler for each element
+      $(`#open-bill${bill.id}`).off('click').on('click', (e) => this.handleEditTicket(e, bill, bills));
     });
 
     return bills;
