@@ -1,2 +1,5 @@
 import $ from 'jquery';
-global.$ = global.jQuery = $;
+
+// export default $;
+global.$ = $;
+$.fn.modal = jest.fn();

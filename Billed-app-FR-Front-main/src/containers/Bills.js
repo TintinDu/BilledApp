@@ -2,6 +2,8 @@ import { ROUTES_PATH } from '../constants/routes.js';
 import { formatDate, formatStatus } from '../app/format.js';
 import Logout from './Logout.js';
 
+// import $ from '../../setup-jest.js';
+
 export default class {
   constructor({
     document, onNavigate, store, localStorage,
@@ -54,7 +56,6 @@ export default class {
                     : doc.date,
                 status: formatStatus(doc.status),
                 ...doc,
-                // formater date uniquement en prod soit ici soit dans BillsUI
               };
             } catch (e) {
               // if for some reason, corrupted data was introduced, we manage here failing formatDate function
