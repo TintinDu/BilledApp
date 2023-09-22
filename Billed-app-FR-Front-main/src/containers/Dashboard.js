@@ -2,12 +2,12 @@ import { formatDate } from '../app/format.js';
 import DashboardFormUI from '../views/DashboardFormUI.js';
 import BigBilledIcon from '../assets/svg/big_billed.js';
 // eslint-disable-next-line import/no-cycle
+/* eslint-env jquery */
 import { ROUTES_PATH } from '../constants/routes.js';
 import USERS_TEST from '../constants/usersTest.js';
 import Logout from './Logout.js';
-// import $ from '../../setup-jest.js';
 
-export const filteredBills = (data, status) => ((data && data.length)
+export const filterBills = (data, status) => ((data && data.length)
   ? data.filter((bill) => {
     let selectCondition;
 
