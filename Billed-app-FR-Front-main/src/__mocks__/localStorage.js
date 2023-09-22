@@ -1,17 +1,19 @@
-export const localStorageMock = (function() {
+const localStorageMock = (() => {
   let store = {};
   return {
-    getItem: function(key) {
-      return JSON.stringify(store[key])
+    getItem(key) {
+      return JSON.stringify(store[key]);
     },
-    setItem: function(key, value) {
-      store[key] = value.toString()
+    setItem(key, value) {
+      store[key] = value.toString();
     },
-    clear: function() {
-      store = {}
+    clear() {
+      store = {};
     },
-    removeItem: function(key) {
-      delete store[key]
-    }
-  }
-})()
+    removeItem(key) {
+      delete store[key];
+    },
+  };
+}
+)();
+export default localStorageMock;

@@ -1,5 +1,5 @@
 import { ROUTES_PATH } from '../constants/routes.js';
-// import $ from '../../setup-jest.js';
+/* eslint-env jquery */
 
 export default class Logout {
   constructor({ document, onNavigate, localStorage }) {

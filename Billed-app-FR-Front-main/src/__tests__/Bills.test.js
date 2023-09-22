@@ -1,17 +1,17 @@
 /**
  * @jest-environment jsdom
  */
-
+/* eslint-env jquery */
 import userEvent from '@testing-library/user-event';
-import { getByTestId, screen, waitFor } from '@testing-library/dom';
-import $ from '../../setup-jest.js';
+import { screen, waitFor } from '@testing-library/dom';
 import BillsUI from '../views/BillsUI.js';
 import { bills } from '../fixtures/bills.js';
 import { ROUTES_PATH, ROUTES } from '../constants/routes.js';
-import { localStorageMock } from '../__mocks__/localStorage.js';
 import '@testing-library/jest-dom/extend-expect';
 import router from '../app/Router.js';
 import Bills from '../containers/Bills.js';
+
+const localStorageMock = jest.mock('../__mocks__/localStorage.js');
 
 describe('Given I am connected as an employee', () => {
   describe('When I am on Bills Page', () => {

@@ -41,23 +41,28 @@ class ApiEntity {
   }
 
   async select({ selector, headers = {} }) {
-    return await (this.api.get({ url: `/${this.key}/${selector}`, headers: getHeaders(headers) }));
+    const selected = await (this.api.get({ url: `/${this.key}/${selector}`, headers: getHeaders(headers) }));
+    return selected;
   }
 
   async list({ headers = {} } = {}) {
-    return await (this.api.get({ url: `/${this.key}`, headers: getHeaders(headers) }));
+    const listed = await (this.api.get({ url: `/${this.key}`, headers: getHeaders(headers) }));
+    return listed;
   }
 
   async update({ data, selector, headers = {} }) {
-    return await (this.api.patch({ url: `/${this.key}/${selector}`, headers: getHeaders(headers), data }));
+    const updated = await (this.api.patch({ url: `/${this.key}/${selector}`, headers: getHeaders(headers), data }));
+    return updated;
   }
 
   async create({ data, headers = {} }) {
-    return await (this.api.post({ url: `/${this.key}`, headers: getHeaders(headers), data }));
+    const created = await (this.api.post({ url: `/${this.key}`, headers: getHeaders(headers), data }));
+    return created;
   }
 
   async delete({ selector, headers = {} }) {
-    return await (this.api.delete({ url: `/${this.key}/${selector}`, headers: getHeaders(headers) }));
+    const deleted = await (this.api.delete({ url: `/${this.key}/${selector}`, headers: getHeaders(headers) }));
+    return deleted;
   }
 }
 

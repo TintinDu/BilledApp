@@ -4,7 +4,14 @@ module.exports = {
     es2021: true,
   },
   extends: 'airbnb-base',
+  plugins: ['jest'],
   overrides: [
+    {
+      files: ['**/*.test.js'],
+      env: { 'jest/globals': true },
+      plugins: ['jest'],
+      extends: ['plugin:jest/recommended'],
+    },
     {
       env: {
         node: true,
@@ -23,5 +30,8 @@ module.exports = {
   },
   rules: {
     'import/extensions': 'off',
+  },
+  globals: {
+    jQuery: true,
   },
 };

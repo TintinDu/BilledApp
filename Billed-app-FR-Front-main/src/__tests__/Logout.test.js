@@ -3,12 +3,11 @@
  */
 
 import { screen } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import Logout from '../containers/Logout.js';
 import '@testing-library/jest-dom/extend-expect';
-import { localStorageMock } from '../__mocks__/localStorage.js';
 import DashboardUI from '../views/DashboardUI.js';
-import userEvent from '@testing-library/user-event';
-import { ROUTES } from '../constants/routes';
+import { ROUTES } from '../constants/routes.js';
 
 const bills = [{
   id: '47qAXb6fIm2zOKkLzMro',
@@ -25,6 +24,8 @@ const bills = [{
   email: 'a@a',
   pct: 20,
 }];
+
+const localStorageMock = jest.mock('../__mocks__/localStorage.js');
 
 describe('Given I am connected', () => {
   describe('When I click on disconnect button', () => {
