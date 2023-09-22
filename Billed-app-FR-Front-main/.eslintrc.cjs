@@ -11,6 +11,9 @@ module.exports = {
       env: { 'jest/globals': true },
       plugins: ['jest'],
       extends: ['plugin:jest/recommended'],
+      rules: {
+        'jest/no-mocks-import': 'off',
+      },
     },
     {
       env: {

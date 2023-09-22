@@ -5,13 +5,15 @@ import { fireEvent, screen, waitFor } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import DashboardFormUI from '../views/DashboardFormUI.js';
 import DashboardUI from '../views/DashboardUI.js';
-import Dashboard, { filterBills, cards } from '../containers/Dashboard.js';
+import Dashboard from '../containers/Dashboard.js';
+import { filterBills, cards } from '../containers/BillUtils.js';
 import { ROUTES, ROUTES_PATH } from '../constants/routes.js';
 import { bills } from '../fixtures/bills.js';
 import router from '../app/Router.js';
+import mockStore from '../__mocks__/store.js';
+import localStorageMock from '../__mocks__/localStorage.js';
 
-const localStorageMock = jest.mock('../__mocks__/localStorage.js');
-const mockStore = jest.mock('../app/store', () => '../__mocks__/store.js');
+jest.mock('../app/store', () => jest.requireActual('../__mocks__/store.js').default);
 
 describe('Given I am connected as an Admin', () => {
   describe('When I am on Dashboard page, there are bills, and there is one pending', () => {

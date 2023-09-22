@@ -1,5 +1,5 @@
-import { ROUTES_PATH } from '../constants/routes.js';
 /* eslint-env jquery */
+import { ROUTES_PATH } from '../constants/routes.js';
 
 export default class Logout {
   constructor({ document, onNavigate, localStorage }) {

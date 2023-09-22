@@ -17,6 +17,6 @@ export const formatStatus = (status) => {
     case 'refused':
       return 'Refused';
     default:
-      return '';
+      return 'En attente';
   }
 };
