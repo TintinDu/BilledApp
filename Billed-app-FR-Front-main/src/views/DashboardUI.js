@@ -2,8 +2,7 @@ import VerticalLayout from './VerticalLayout.js';
 import ErrorPage from './ErrorPage.js';
 import LoadingPage from './LoadingPage.js';
 import BigBilledIcon from '../assets/svg/big_billed.js';
-// eslint-disable-next-line import/no-cycle
-import { filterBills } from '../containers/Dashboard.js';
+import { filterBills } from '../containers/BillUtils.js';
 import ArrowIcon from '../assets/svg/arrow.js';
 
 export default ({ data, loading, error }) => {

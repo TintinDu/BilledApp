@@ -4,7 +4,8 @@
 
 import { screen } from '@testing-library/dom';
 import VerticalLayout from '../views/VerticalLayout';
-import { localStorageMock } from '../__mocks__/localStorage.js';
+
+import localStorageMock from '../__mocks__/localStorage.js';
 
 describe('Given I am connected as Employee', () => {
   test('Then Icons should be rendered', () => {

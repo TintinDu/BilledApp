@@ -1,7 +1,7 @@
+/* eslint-env jquery */
 import { ROUTES_PATH } from '../constants/routes.js';
 import { formatDate, formatStatus } from '../app/format.js';
 import Logout from './Logout.js';
-/* eslint-env jquery */
 
 export default class {
   constructor({
@@ -20,6 +20,7 @@ export default class {
         icon.addEventListener('click', () => this.handleClickIconEye(icon));
       });
     }
+    // eslint-disable-next-line no-new
     new Logout({ document, localStorage, onNavigate });
   }
 
@@ -27,6 +28,7 @@ export default class {
     this.onNavigate(ROUTES_PATH.NewBill);
   };
 
+  // eslint-disable-next-line class-methods-use-this
   handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute('data-bill-url');
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5);
@@ -57,7 +59,8 @@ export default class {
                 ...doc,
               };
             } catch (e) {
-              // if for some reason, corrupted data was introduced, we manage here failing formatDate function
+              // if for some reason, corrupted data was introduced,
+              // we manage here failing formatDate function
               // log the error and return unformatted date in that case
               console.log(e, 'for', doc);
               return {
