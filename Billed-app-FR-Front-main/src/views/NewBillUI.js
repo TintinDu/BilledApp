@@ -60,7 +60,7 @@ export default () => (`
             <div class="row">
               <div class="col-md-6">
                 <div class="col-half">
-                  <button type="submit" id='btn-send-bill' class="btn btn-primary">Envoyer</button>
+                  <button type="submit" id='btn-send-bill' class="btn btn-primary" data-testid="submit-btn-new-bill" >Envoyer</button>
                 </div>
               </div>
             </div>
