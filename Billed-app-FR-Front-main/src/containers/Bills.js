@@ -53,21 +53,23 @@ export default class {
                 date:
                   // in jest environment
                   typeof jest === 'undefined' ? formatDate(doc.date)
+                  /* istanbul ignore next */
                   // in prod environment
                     : doc.date,
                 status: formatStatus(doc.status),
                 ...doc,
               };
-            } catch (e) {
+            } catch (error) {
               // if for some reason, corrupted data was introduced,
               // we manage here failing formatDate function
               // log the error and return unformatted date in that case
-              console.log(e, 'for', doc);
-              return {
-                ...doc,
-                date: doc.date,
-                status: formatStatus(doc.status),
-              };
+              console.log(error, 'for', doc);
+              throw error;
+              // return {
+              //   ...doc,
+              //   date: doc.date,
+              //   status: formatStatus(doc.status),
+              // };
             }
           });
           return bills;
