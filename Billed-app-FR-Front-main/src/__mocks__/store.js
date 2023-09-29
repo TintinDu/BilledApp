@@ -61,6 +61,7 @@ const mockedBills = {
       fileUrl: 'https://test.storage.tld/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=4df6ed2c-12c8-42a2-b013-346c1346f732',
     }]);
   },
+  // utiliser les deux méthodes suivantes pour le test POST
   create() {
     return Promise.resolve({ fileUrl: 'https://localhost:3456/images/test.jpg', key: '1234' });
   },

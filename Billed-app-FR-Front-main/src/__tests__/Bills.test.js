@@ -3,18 +3,18 @@
  */
 /* eslint-env jquery */
 import userEvent from '@testing-library/user-event';
-import $ from 'jquery'; // Import jQuery
-
 import { screen, waitFor } from '@testing-library/dom';
+import mockStore from '../__mocks__/store.js';
 import BillsUI from '../views/BillsUI.js';
 import { bills } from '../fixtures/bills.js';
 import { ROUTES_PATH, ROUTES } from '../constants/routes.js';
 import '@testing-library/jest-dom/extend-expect';
 import router from '../app/Router.js';
 import Bills from '../containers/Bills.js';
-import { formatDate, formatStatus } from '../app/format.js';
 
 import localStorageMock from '../__mocks__/localStorage.js';
+
+jest.mock('../app/store', () => jest.requireActual('../__mocks__/store.js').default);
 
 describe('Given I am connected as an employee', () => {
   describe('When I am on Bills Page', () => {
@@ -107,60 +107,69 @@ describe('Given I am connected as an employee', () => {
         expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH.NewBill);
       });
     });
-    describe('getBills', () => {
-      test('should fetch and format bills', async () => {
-        const mockStore = {
-          bills: jest.fn().mockReturnThis(), // Mock the bills method
-          // Mock the list method and resolve with your test bills data
-          list: jest.fn().mockResolvedValue(bills),
-        };
+  });
+});
 
-        const billsContainer = new Bills({
-          document,
-          onNavigate: jest.fn(),
-          store: mockStore, // Use the mock store
-          bills: null, // Set bills to null to trigger fetching from the mock store
-          localStorage: window.localStorage,
-        });
+// test d'intégration GET
+describe('Given I am a user connected as employee', () => {
+  describe('When I go to the Bills screen', () => {
+    test('Then it should fetch bills from mock API GET', async () => {
+      // clearing HTML before integration test
+      document.body.innerHTML = '';
 
-        const formattedBills = await billsContainer.getBills();
+      localStorage.setItem('user', JSON.stringify({ type: 'Employee', email: 'a@a' }));
+      const root = document.createElement('div');
+      root.setAttribute('id', 'root');
+      document.body.append(root);
+      router();
+      window.onNavigate(ROUTES_PATH.Bills);
+      await waitFor(() => screen.getByText('Mes notes de frais'));
 
-        // Check that the list method of the mock store was called
-        expect(mockStore.list).toHaveBeenCalled();
+      const kindHeader = await screen.getByText('Type');
+      expect(kindHeader).toBeTruthy();
 
-        // Check that the bills were formatted correctly
-        expect(formattedBills).toEqual(bills.map((bill) => ({
-          date: formatDate(bill.date),
-          status: formatStatus(bill.status),
-          ...bill,
-        })));
+      const date = await screen.getByText('2001-01-01');
+      expect(date).toBeTruthy();
+
+      expect(screen.getAllByTestId('icon-eye')).toBeTruthy();
+    });
+
+    describe('When an error occurs on API', () => {
+      beforeEach(() => {
+        jest.spyOn(mockStore, 'bills');
+        Object.defineProperty(
+          window,
+          'localStorage',
+          { value: localStorageMock },
+        );
+        window.localStorage.setItem('user', JSON.stringify({
+          type: 'Employee',
+          email: 'a@a',
+        }));
+        const root = document.createElement('div');
+        root.setAttribute('id', 'root');
+        document.body.appendChild(root);
+        router();
+      });
+      test('Then it should fetch bills from an API and fails with 404 message error', async () => {
+        mockStore.bills.mockImplementationOnce(() => ({
+          list: () => Promise.reject(new Error('Erreur 404')),
+        }));
+        window.onNavigate(ROUTES_PATH.Bills);
+        await new Promise(process.nextTick);
+        const message = await screen.getByText(/Erreur 404/);
+        expect(message).toBeTruthy();
       });
 
-      test('should handle error in case of data corruption', async () => {
-        const corruptedBills = [
-          // Create corrupted data here as needed for testing
-        ];
+      test('Then it should fetch bills from an API and fails with 500 message error', async () => {
+        mockStore.bills.mockImplementationOnce(() => ({
+          list: () => Promise.reject(new Error('Erreur 500')),
+        }));
 
-        const mockStore = {
-          bills: jest.fn().mockReturnThis(),
-          list: jest.fn().mockResolvedValue(corruptedBills),
-        };
-
-        const billsContainer = new Bills({
-          document,
-          onNavigate: jest.fn(),
-          store: mockStore,
-          bills: null,
-          localStorage: window.localStorage,
-        });
-
-        const formattedBills = await billsContainer.getBills();
-
-        // Check that the list method of the mock store was called
-        expect(mockStore.list).toHaveBeenCalled();
-
-        // Check that the function handled data corruption and returned the data without formatting
-        expect(formattedBills).toEqual(corruptedBills);
+        window.onNavigate(ROUTES_PATH.Bills);
+        await new Promise(process.nextTick);
+        const message = await screen.getByText(/Erreur 500/);
+        expect(message).toBeTruthy();
       });
     });
   });
