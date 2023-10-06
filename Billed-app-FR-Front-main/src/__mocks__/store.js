@@ -63,7 +63,7 @@ const mockedBills = {
   },
   // utiliser les deux méthodes suivantes pour le test POST
   create() {
-    return Promise.resolve({ fileUrl: 'https://localhost:3456/images/test.jpg', key: '1234' });
+    return Promise.resolve({ fileUrl: 'https://localhost:3456/images/test.pdf', key: '1234' });
   },
   update() {
     return Promise.resolve({

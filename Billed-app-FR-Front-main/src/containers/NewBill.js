@@ -44,11 +44,11 @@ export default class NewBill {
         errorMessage.setAttribute('data-testid', 'errorMessage');
         inputFile.closest('div').appendChild(errorMessage);
       }
-      // On cache le message d'erreur si le format du fichier est le bon et qu'un message d'erreur existait auparavant
+      // On cache le message d'erreur si le format du fichier est le bon
+      // et qu'un message d'erreur existait auparavant
     } else if (this.document.querySelector('.errorMessage')) {
       this.document.querySelector('.errorMessage').className = 'errorMessage hidden';
     }
-    // vérifier le texte de l'erreur dans le test, faire le plus simple possible, utiliser data-testid
     this.store
       .bills()
       .create({
