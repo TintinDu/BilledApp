@@ -74,6 +74,47 @@ describe('Given I am connected as an employee', () => {
       });
     });
   });
+  describe('When an error occurred during file upload', () => {
+    test('Then an error should be logged', async () => {
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      };
+
+      // Mock the user type in local storage
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+      window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee',
+      }));
+
+      // Render the NewBillUI component and create a NewBill instance
+      document.body.innerHTML = NewBillUI();
+      const newBill = new NewBill({
+        document, onNavigate, store: mockStore, localStorage: window.localStorage,
+      });
+
+      // Get the file input element
+      const fileInput = screen.getByTestId('file');
+
+      // Mock the store.bills().create function to reject with an error
+      const billsMock = jest.spyOn(mockStore, 'bills');
+      const error = mockStore.bills.mockImplementationOnce(() => ({
+        create: () => Promise.reject(new Error('An error occurred during upload')),
+      }));
+      const handleChangeFile = jest.fn((e) => newBill.handleChangeFile(e));
+
+      const file = new File(['test-file'], 'test-file.pdf', { type: 'image/pdf' });
+
+      fileInput.addEventListener('change', handleChangeFile);
+
+      // Simulate selecting a file in the input field
+      userEvent.upload(fileInput, file);
+
+      expect(billsMock).toHaveBeenCalled();
+      expect(handleChangeFile).toHaveBeenCalled();
+      expect(error).toHaveBeenCalled();
+      error.mockRestore();
+    });
+  });
   describe('When I submit the form with valid data', () => {
     test('Then updateBill function should be called with the correct data', async () => {
       // Mock the onNavigate function
@@ -113,8 +154,8 @@ describe('Given I am connected as an employee', () => {
 
 // TEST INTEGRATION POST
 describe('When I navigate as an employee on the newBill page', () => {
-  describe('When the form is filled', () => {
-    test('Then data form should be the same as the input', async () => {
+  describe('When the form is filled correctly', () => {
+    test('Then a new bill should be created', async () => {
       const billFixture = {
         id: '47qAXb6fIm2zOKkLzMro',
         vat: '80',
@@ -149,6 +190,7 @@ describe('When I navigate as an employee on the newBill page', () => {
         document, onNavigate, store: mockStore, localStorage: window.localStorage,
       });
 
+      // Simulating filling inputs
       const expenseTypeInput = screen.getByTestId('expense-type');
       fireEvent.change(expenseTypeInput, { target: { value: billFixture.type } });
       expect(expenseTypeInput.value).toBe(billFixture.type);
@@ -182,29 +224,24 @@ describe('When I navigate as an employee on the newBill page', () => {
       fileInput.addEventListener('change', handleChangeFile);
       userEvent.upload(fileInput, file);
       expect(fileInput.files[0]).toMatchObject(file);
+
+      // Simulate submitting the form
+      const handleSubmit = jest.fn((e) => newBill.handleSubmit(e));
+      const formNewBill = screen.getByTestId('form-new-bill');
+      formNewBill.addEventListener('submit', handleSubmit);
+      fireEvent.submit(formNewBill);
+
+      // Expect that updateBill is called with the correct data
+      expect(formNewBill).toBeTruthy();
+      expect(handleSubmit).toHaveBeenCalled();
+
+      // Expect navigation on BillsUi
+      const btnNewBill = screen.getByTestId('btn-new-bill');
+      expect(btnNewBill).toBeTruthy();
+
+      // Expect createdBill to be visible
+      const nameNewBill = screen.getByText('encore');
+      expect(nameNewBill).toBeTruthy();
     });
   });
 });
-
-// describe('When an invalid file type is uploaded', () => {
-//   test('Then it should display an error message', async () => {
-//     // Get the file input element
-//     const fileInput = screen.getByTestId('file');
-//     fileInput.addEventListener('change', handleChangeFile);
-
-//     // Simulate selecting the invalid file in the input field
-//     // userEvent.upload(fileInput, {});
-
-//     // Ensure that the error message is displayed
-//     await new Promise(process.nextTick);
-//     expect(fileInput).toBeTruthy();
-//     // const errorMessage = screen.getByTestId('errorMessage');
-//     // expect(errorMessage).toBeTruthy();
-//     // expect(billsMock).toHaveBeenCalled();
-//     expect(createdMock).toBeTruthy();
-//   });
-// });
-// contrôler sur bills que la nouvelle note de frais s'affiche correctement
-// contrôler l'erreur dans le console.error() avec jest
-// const error = jest.spyOn(console, "error").mockImplementation(() => {});
-// expect(error).toBeCalledWith("") logger le message d'erreur
