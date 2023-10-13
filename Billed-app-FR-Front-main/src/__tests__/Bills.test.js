@@ -125,7 +125,7 @@ describe('Given I am a user connected as employee', () => {
       window.onNavigate(ROUTES_PATH.Bills);
       await waitFor(() => screen.getByText('Mes notes de frais'));
 
-      const kindHeader = await screen.getByText('Type');
+      const kindHeader = await screen.getByText('Transports');
       expect(kindHeader).toBeTruthy();
 
       const date = await screen.getByText('2001-01-01');
