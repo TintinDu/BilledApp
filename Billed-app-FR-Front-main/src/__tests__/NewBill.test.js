@@ -8,7 +8,9 @@ import NewBillUI from '../views/NewBillUI.js';
 import mockStore from '../__mocks__/store.js';
 import localStorageMock from '../__mocks__/localStorage.js';
 import NewBill from '../containers/NewBill.js';
-import { ROUTES } from '../constants/routes.js';
+import { ROUTES, ROUTES_PATH } from '../constants/routes.js';
+import Router from '../app/Router.js';
+import BillsUI from '../views/BillsUI.js';
 
 jest.mock('../app/store', () => mockStore);
 
@@ -255,6 +257,45 @@ describe('When I navigate as an employee on the newBill page', () => {
       expect(handleChangeFile).toHaveBeenCalled();
       expect(error).toHaveBeenCalled();
       error.mockRestore();
+    });
+  });
+  describe('When an error occurs for POST method', () => {
+    beforeEach(() => {
+      jest.spyOn(mockStore, 'bills');
+      Object.defineProperty(
+        window,
+        'localStorage',
+        { value: localStorageMock },
+      );
+      window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee',
+        email: 'a@a',
+      }));
+      const root = document.createElement('div');
+      root.setAttribute('id', 'root');
+      document.body.appendChild(root);
+      Router();
+    });
+    test('It should fails with 404 message error', async () => {
+      window.onNavigate(ROUTES_PATH.NewBill);
+      mockStore.bills.mockImplementationOnce(() => ({
+        create: () => Promise.reject(new Error('Erreur 404')),
+      }));
+      document.body.innerHTML = BillsUI({ error: 'Erreur 404' });
+      await new Promise(process.nextTick);
+      const message = await screen.getByText(/Erreur 404/);
+      expect(message).toBeTruthy();
+    });
+
+    test('It should fails with 500 message error', async () => {
+      window.onNavigate(ROUTES_PATH.NewBill);
+      mockStore.bills.mockImplementationOnce(() => ({
+        update: () => Promise.reject(new Error('Erreur 500')),
+      }));
+      document.body.innerHTML = BillsUI({ error: 'Erreur 500' });
+      await new Promise(process.nextTick);
+      const message = await screen.getByText(/Erreur 500/);
+      expect(message).toBeTruthy();
     });
   });
 });
