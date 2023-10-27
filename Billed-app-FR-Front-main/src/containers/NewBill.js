@@ -29,6 +29,8 @@ export default class NewBill {
     formData.append('file', file);
     formData.append('email', email);
 
+    // on prend le dernier élément du tableau créé par la fonction split
+    // on a l'extension du fichier qu'on stock dans la variable
     let fileExtension = filePath[filePath.length - 1].split('.');
     fileExtension = fileExtension[fileExtension.length - 1];
 
