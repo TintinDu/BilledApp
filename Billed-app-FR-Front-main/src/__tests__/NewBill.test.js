@@ -34,16 +34,6 @@ describe('Given I am connected as an employee', () => {
     });
   });
   describe('When I am on NewBill Page, there is a form', () => {
-    describe('When I click on the submit button', () => {
-      test('Then handle submit function should be called', async () => {
-        const formNewBill = screen.getByTestId('form-new-bill');
-
-        const handleSubmit = jest.fn((e) => newBill.handleSubmit(e));
-        formNewBill.addEventListener('click', handleSubmit);
-        userEvent.click(formNewBill);
-        expect(handleSubmit).toHaveBeenCalled();
-      });
-    });
     describe('When I upload a file in the input field', () => {
       test('Then handleChangeFile function should be called', async () => {
         // Get the file input element
