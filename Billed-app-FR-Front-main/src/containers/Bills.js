@@ -64,12 +64,11 @@ export default class {
               // we manage here failing formatDate function
               // log the error and return unformatted date in that case
               console.log(error, 'for', doc);
-              throw error;
-              // return {
-              //   ...doc,
-              //   date: doc.date,
-              //   status: formatStatus(doc.status),
-              // };
+              return {
+                ...doc,
+                date: doc.date,
+                status: formatStatus(doc.status),
+              };
             }
           });
           return bills;
